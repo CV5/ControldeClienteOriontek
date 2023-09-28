@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Control de Cliente</string>
+    <string name="buscar_cliente">Buscar cliente</string>
+    <string name="agregar_nuevo_cliente">Agregar nuevo cliente</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellido">Apellido</string>
+    <string name="agregar_direci_n">Agregar otra direción</string>
+    <string name="guardar_cliente">Guardar Cliente</string>
+    <string name="direcci_n">Dirección</string>
+    <string name="email">email</string>
+</resources>
