@@ -1,80 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="4dp"
-    tools:context=".FormularioActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="modelo"
+            type="com.cv5.controldecliente.viewModel.FormularioViewModel" />
+    </data>
 
-    <EditText
-        android:id="@+id/etNombre"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/nombre"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/etApellido"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/apellido"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etNombre"
-        android:layout_marginTop="8dp"
-        />
-    <EditText
-        android:id="@+id/etEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etApellido"
-        android:layout_marginTop="8dp"
-        />
-
-    <EditText
-        android:id="@+id/etDireccion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/direcci_n"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etEmail"
-        android:layout_marginTop="8dp"
-        />
-
-    <Button
-        android:id="@+id/btAgregarDirecciones"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="#A6A2A2"
-        android:text="@string/agregar_direci_n"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etDireccion" />
-
-    <ListView
-        android:id="@+id/lvListaDirecciones"
-        android:layout_width="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/btAgregarDirecciones"
-        android:layout_height="200dp"/>
+        android:layout_height="match_parent"
+        android:padding="4dp"
+        tools:context=".FormularioActivity">
 
 
-    <Button
-        android:id="@+id/btGuardarCliente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/guardar_cliente"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_margin="16dp"
-        />
+        <EditText
+            android:id="@+id/etNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/nombre"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@={modelo.nombre}"
+            />
+
+        <EditText
+            android:id="@+id/etApellido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/apellido"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etNombre"
+            android:layout_marginTop="8dp"
+            android:text="@={modelo.apellido}"
+
+            />
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etApellido"
+            android:layout_marginTop="8dp"
+            android:text="@={modelo.email}"
+
+            />
+
+        <EditText
+            android:id="@+id/etDireccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/direcci_n"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etEmail"
+            android:layout_marginTop="8dp"
+            android:text="@={modelo.direccion}"
+
+            />
+
+        <Button
+            android:id="@+id/btAgregarDirecciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#A6A2A2"
+            android:text="@string/agregar_direci_n"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etDireccion"
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            />
+
+        <ListView
+            android:id="@+id/lvListaDirecciones"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/btAgregarDirecciones"
+            android:layout_height="200dp"
+
+            />
+
+
+        <Button
+            android:id="@+id/btGuardarCliente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/guardar_cliente"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="16dp"
+            android:onClick="@{()->modelo.guardarCliente()}"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

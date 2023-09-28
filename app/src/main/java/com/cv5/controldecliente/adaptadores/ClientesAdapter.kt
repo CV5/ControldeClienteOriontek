@@ -25,6 +25,8 @@ class ClientesAdapter(private val dataset: List<Cliente>) :
         val itemActual: Cliente = dataset.get(position)
         holder.enlazarItem(itemActual)
 
+
+
     }
 
 
@@ -34,6 +36,8 @@ class ClientesAdapter(private val dataset: List<Cliente>) :
         fun enlazarItem(itemActual: Cliente) {
                 binding.tvNombre.text = "${itemActual.nombre} ${itemActual.apellido}"
                 binding.tvEmail.text = itemActual.email
+
+
         }
 
     }
