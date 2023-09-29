@@ -104,7 +104,6 @@
                 android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:visibility="gone"
-                android:onClick="@{()->modelo.borrarCliente(modelo.idCliente)}"
                 android:text="@string/borrar" />
 
             <Button

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import com.cv5.controldecliente.config.Constantes
 import com.cv5.controldecliente.databinding.ActivityFormularioBinding
+import com.cv5.controldecliente.dialog.MyAlertDialog
 import com.cv5.controldecliente.viewModel.FormularioViewModel
 
 class FormularioActivity : AppCompatActivity() {
@@ -34,7 +35,6 @@ class FormularioActivity : AppCompatActivity() {
         binding.lvListaDirecciones.adapter = arrayAdapter
         binding.lvListaDirecciones.setOnItemClickListener { parent, view, position, id ->
             val element = arrayAdapter.getItem(position)
-
             when(viewModel.operacion){
                 Constantes.OPERATION_INSERTAR->{
                     arrayAdapter.remove(element)
@@ -50,18 +50,14 @@ class FormularioActivity : AppCompatActivity() {
                         arrayAdapter.remove(element)
                         mostrarMensaje("Dirección eliminada")
                     }
-
                 }
             }
         }
-
         binding.btAgregarDirecciones.setOnClickListener {
                 if (!viewModel.direccion.value.isNullOrEmpty()){
                     viewModel.direccionesString.add(viewModel.direccion.value!!)
                     binding.etDireccion.text.clear()
                     arrayAdapter.notifyDataSetChanged()
-
-
                 }else{
                     Toast.makeText(this,
                         "El campo de dirección esta vacío",
@@ -96,8 +92,12 @@ class FormularioActivity : AppCompatActivity() {
             mostrarMensaje("Se borró con exito la dirección")
             arrayAdapter.notifyDataSetChanged()
         })
-    }
 
+        binding.btnBorrarCliente.setOnClickListener {
+            val dialogFragment = MyAlertDialog()
+            dialogFragment.show(supportFragmentManager, "Confirmation")
+        }
+    }
     private fun irAlInicio() {
         val intent = Intent(applicationContext,MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

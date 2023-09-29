@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FormularioViewModel : ViewModel() {
-
     var direccionesString: ArrayList<String> = ArrayList()
     var direcciones: ArrayList<Direccion> = ArrayList()
     var idCliente = MutableLiveData<Long>()
@@ -24,16 +23,6 @@ class FormularioViewModel : ViewModel() {
     var fueExitosaLaOperacion = MutableLiveData<Boolean>()
     var tieneDirecciones = MutableLiveData<Boolean>()
     var borroDireccion = MutableLiveData<Boolean>()
-
-//    fun agregarOtraDirecion(direccion:String){
-////        if (direcciones.isNotEmpty()){
-//            direcciones.add(direccion)
-////        }else{
-////            direcciones = ArrayList()
-////            direcciones.add(direccion)
-////        }
-//    }
-
     fun guardarCliente() {
         var mCliente = Cliente(
             0,
@@ -52,7 +41,6 @@ class FormularioViewModel : ViewModel() {
             }
         }
     }
-
     fun actualizarCliente() {
         var mCliente = Cliente(
             idCliente.value!!,
@@ -94,9 +82,7 @@ class FormularioViewModel : ViewModel() {
             }
         }
     }
-
     fun guardarDireccionesCliente(id: Long) {
-//        var listaDirecion: ArrayList<Direccion> = ArrayList()
         viewModelScope.launch {
             if (!direccion.value.isNullOrEmpty()) {
                 direccionesString.add(direccion.value!!)
@@ -115,17 +101,16 @@ class FormularioViewModel : ViewModel() {
                 fueExitosaLaOperacion.value = result.isNotEmpty()
             }else{
                 fueExitosaLaOperacion.value = true
-
             }
         }
     }
 
     fun cargarDatosPorID(id: Long) {
         viewModelScope.launch {
-            var clienteDb = withContext(Dispatchers.IO) {
+            val clienteDb = withContext(Dispatchers.IO) {
                 db.clienteDao().obtenerClientePorID(id)
             }
-            var direccionesDb = withContext(Dispatchers.IO) {
+            val direccionesDb = withContext(Dispatchers.IO) {
                 db.direccionesDao().obtenerTodas(id)
             }
             tieneDirecciones.value = direccionesDb.isNotEmpty()
@@ -134,10 +119,6 @@ class FormularioViewModel : ViewModel() {
             email.value = clienteDb.email
             direcciones.addAll(direccionesDb)
             direccionesString.addAll(direccionesDb.map { it.direccion })
-
         }
-
     }
-
-
 }
