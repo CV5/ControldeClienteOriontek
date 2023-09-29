@@ -49,10 +49,7 @@ class ClientesAdapter(private val dataset: List<Cliente>) :
                 contexto.startActivity(intent)
 
             }
-            binding.btVerDirecciones.setOnClickListener {
 
-                Toast.makeText(contexto,"Button",Toast.LENGTH_LONG).show()
-            }
         }
 
     }
