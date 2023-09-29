@@ -1,20 +1,17 @@
 package com.cv5.controldecliente
 
 import android.content.Intent
-import android.health.connect.datatypes.units.Length
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import com.cv5.controldecliente.config.Constantes
 import com.cv5.controldecliente.databinding.ActivityFormularioBinding
 import com.cv5.controldecliente.viewModel.FormularioViewModel
-import com.cv5.controldecliente.viewModel.MainViewModel
 
 class FormularioActivity : AppCompatActivity() {
     lateinit var binding: ActivityFormularioBinding
@@ -51,16 +48,32 @@ class FormularioActivity : AppCompatActivity() {
         }
 
 
-        viewModel.fueExitosaLaOperacion.observe(this, Observer {
 
+        if (viewModel.operacion == Constantes.OPERATION_EDITAR){
+            viewModel.idCliente.value = intent.getLongExtra(Constantes.ID_CLIENTE_KEY,0)
+            binding.btnBorrarCliente.visibility = View.VISIBLE
+            binding.btnEditarCliente.visibility = View.VISIBLE
+            viewModel.cargarDatosPorID(viewModel.idCliente.value!!)
+            binding.btGuardarCliente.visibility = View.GONE
+        }else{
+            binding.btnBorrarCliente.visibility = View.GONE
+            binding.btnEditarCliente.visibility = View.GONE
+            binding.btGuardarCliente.visibility = View.VISIBLE
+        }
+
+        viewModel.fueExitosaLaOperacion.observe(this, Observer {
             if (it){
                 mostrarMensaje("Operación Exitosa");
                 irAlInicio();
             }else{
                 mostrarMensaje("Operación Fallida");
-
             }
+        })
 
+        viewModel.tieneDirecciones.observe(this, Observer {
+            if (it){
+                arrayAdapter.notifyDataSetChanged()
+            }
         })
 
 

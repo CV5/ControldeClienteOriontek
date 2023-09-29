@@ -1,6 +1,5 @@
 package com.cv5.controldecliente.viewModel
 
-import android.R
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,13 +15,14 @@ class FormularioViewModel : ViewModel() {
 
     var direcciones: ArrayList<String> = ArrayList()
 
-    var id = MutableLiveData<Long>()
+    var idCliente = MutableLiveData<Long>()
     var nombre = MutableLiveData<String>()
     var apellido = MutableLiveData<String>()
     var email = MutableLiveData<String>()
     var direccion = MutableLiveData<String>()
     var operacion = Constantes.OPERATION_INSERTAR
     var fueExitosaLaOperacion = MutableLiveData<Boolean>()
+    var tieneDirecciones = MutableLiveData<Boolean>()
 
 //    fun agregarOtraDirecion(direccion:String){
 ////        if (direcciones.isNotEmpty()){
@@ -48,7 +48,7 @@ class FormularioViewModel : ViewModel() {
                             arrayListOf(mCliente)
                         )
                     }
-                    if (result.isNotEmpty()){
+                    if (result.isNotEmpty()) {
                         guardarDireccionesCliente(result[0])
                     }
                 }
@@ -60,6 +60,21 @@ class FormularioViewModel : ViewModel() {
         }
     }
 
+    fun deleteCliente(clienteId: Long) {
+        viewModelScope.launch {
+            var result = withContext(Dispatchers.IO) {
+                db.clienteDao().borrarClientePorId(clienteId)
+            }
+            if (result.toString().isNotEmpty()) {
+                var resultBorrarDirecciones = withContext(Dispatchers.IO) {
+                    db.direccionesDao().borrarDireccion(clienteId)
+                }
+                if (resultBorrarDirecciones.toString().isNotEmpty()) {
+                    fueExitosaLaOperacion.value = resultBorrarDirecciones.toString().isNotEmpty()
+                }
+            }
+        }
+    }
 
     fun guardarDireccionesCliente(id: Long) {
         var listaDirecion: ArrayList<Direccion> = ArrayList()
@@ -67,18 +82,34 @@ class FormularioViewModel : ViewModel() {
             if (direccion.value!!.isNotEmpty()) {
                 direcciones.add(direccion.value!!)
             }
-            for (myDireccion in direcciones){
-                listaDirecion.add(Direccion(0,id,myDireccion))
+            for (myDireccion in direcciones) {
+                listaDirecion.add(Direccion(0, id, myDireccion))
             }
             var result = withContext(Dispatchers.IO) {
                 db.direccionesDao().insertarDireccion(
                     listaDirecion
                 )
             }
+            fueExitosaLaOperacion.value = result.isNotEmpty()
+        }
+    }
 
-                fueExitosaLaOperacion.value = result.isNotEmpty()
-
+    fun cargarDatosPorID(id: Long) {
+        viewModelScope.launch {
+            var clienteDb = withContext(Dispatchers.IO) {
+                db.clienteDao().obtenerClientePorID(id)
+            }
+            var direccionesDb = withContext(Dispatchers.IO) {
+                db.direccionesDao().obtenerTodas(id)
+            }
+            tieneDirecciones.value = direccionesDb.isNotEmpty()
+            nombre.value = clienteDb.nombre
+            apellido.value = clienteDb.apellido
+            email.value = clienteDb.email
+            direcciones.addAll(direccionesDb.map { it.direccion })
         }
 
     }
+
+
 }

@@ -12,6 +12,9 @@ interface ClienteDao {
     //Query para obtener todos los clientes de la base de datos
     @Query("select * from Cliente")
     suspend fun obtenerTodos():List<Cliente>
+
+    @Query("select * from Cliente where idCliente =:id")
+    suspend fun obtenerClientePorID(id:Long):Cliente
     //el Insert para insertar los datos a la tabla, toma una lista por parametros
     //y retorna un long que son las llaves de cada una de las introcciones.
     @Insert
@@ -21,5 +24,9 @@ interface ClienteDao {
     @Update suspend fun actualizarCliente(cliente:Cliente)
     //funciòn para borrar, recibe una instancia del objeto cliente
     // y devuelve un objeto especificando cuantas registro que fueron borradas
-    @Delete suspend fun borrarCliente(cliente:Cliente)
+    @Delete suspend fun borrarCliente(cliente:Cliente): Int
+
+
+    @Query("DELETE FROM cliente WHERE idCliente = :clienteId")
+    suspend fun borrarClientePorId(clienteId:Long): Int
 }

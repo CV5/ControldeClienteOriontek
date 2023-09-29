@@ -10,8 +10,9 @@ import com.cv5.controldecliente.models.Direccion
 
 @Dao
 interface DireccionesDao {
-    @Query("select * from Direccion")
-    suspend fun obtenerTodas():List<Direccion>
+    @Query("select * from Direccion where idCliente = :id")
+    suspend fun obtenerTodas(id:Long):List<Direccion>
+
 
     @Insert
     suspend fun insertarDireccion(direccion: List<Direccion>):List<Long>
@@ -19,6 +20,6 @@ interface DireccionesDao {
     @Update
     suspend fun actualizarDireccion(direccion: Direccion)
 
-    @Delete
-    suspend fun borrarDireccion(direccion: Direccion)
+    @Query("DELETE FROM Direccion WHERE idCliente = :clienteId")
+    suspend fun borrarDireccion(clienteId:Long):Int
 }

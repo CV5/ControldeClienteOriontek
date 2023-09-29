@@ -18,6 +18,18 @@
         android:importantForAutofill="no" />
 
 
+    <TextView
+        android:id="@+id/tvNoCliente"
+        android:text="@string/no_hay_clientes_registrado_msj"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:layout_height="wrap_content"/>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/miRecycler"
         android:layout_width="match_parent"

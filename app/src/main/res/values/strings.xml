@@ -5,7 +5,10 @@
     <string name="nombre">Nombre</string>
     <string name="apellido">Apellido</string>
     <string name="agregar_direci_n">Agregar otra direción</string>
-    <string name="guardar_cliente">Guardar Cliente</string>
+    <string name="guardar_cliente">Guardar</string>
     <string name="direcci_n">Dirección</string>
     <string name="email">email</string>
+    <string name="borrar">borrar</string>
+    <string name="actualizar">actualizar</string>
+    <string name="no_hay_clientes_registrado_msj">No hay clientes registrado en este momento</string>
 </resources>

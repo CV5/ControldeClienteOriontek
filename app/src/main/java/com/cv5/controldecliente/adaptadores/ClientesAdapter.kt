@@ -1,11 +1,14 @@
 package com.cv5.controldecliente.adaptadores
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.graphics.createBitmap
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.cv5.controldecliente.FormularioActivity
 import com.cv5.controldecliente.R
+import com.cv5.controldecliente.config.Constantes
 import com.cv5.controldecliente.databinding.ClienteItemListBinding
 import com.cv5.controldecliente.models.Cliente
 
@@ -38,6 +41,18 @@ class ClientesAdapter(private val dataset: List<Cliente>) :
                 binding.tvEmail.text = itemActual.email
 
 
+
+            binding.root.setOnClickListener {
+                val intent = Intent(contexto,FormularioActivity::class.java)
+                intent.putExtra(Constantes.OPERATION_KEY,Constantes.OPERATION_EDITAR)
+                intent.putExtra(Constantes.ID_CLIENTE_KEY, itemActual.idCliente)
+                contexto.startActivity(intent)
+
+            }
+            binding.btVerDirecciones.setOnClickListener {
+
+                Toast.makeText(contexto,"Button",Toast.LENGTH_LONG).show()
+            }
         }
 
     }
