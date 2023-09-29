@@ -13,8 +13,8 @@ import kotlinx.coroutines.withContext
 
 class FormularioViewModel : ViewModel() {
 
-    var direcciones: ArrayList<String> = ArrayList()
-
+    var direccionesString: ArrayList<String> = ArrayList()
+    var direcciones: ArrayList<Direccion> = ArrayList()
     var idCliente = MutableLiveData<Long>()
     var nombre = MutableLiveData<String>()
     var apellido = MutableLiveData<String>()
@@ -23,6 +23,7 @@ class FormularioViewModel : ViewModel() {
     var operacion = Constantes.OPERATION_INSERTAR
     var fueExitosaLaOperacion = MutableLiveData<Boolean>()
     var tieneDirecciones = MutableLiveData<Boolean>()
+    var borroDireccion = MutableLiveData<Boolean>()
 
 //    fun agregarOtraDirecion(direccion:String){
 ////        if (direcciones.isNotEmpty()){
@@ -40,34 +41,52 @@ class FormularioViewModel : ViewModel() {
             apellido.value!!,
             email.value!!
         )
-        when (operacion) {
-            Constantes.OPERATION_INSERTAR -> {
-                viewModelScope.launch {
-                    var result = withContext(Dispatchers.IO) {
-                        db.clienteDao().insertarCliente(
-                            arrayListOf(mCliente)
-                        )
-                    }
-                    if (result.isNotEmpty()) {
-                        guardarDireccionesCliente(result[0])
-                    }
-                }
+        viewModelScope.launch {
+            var result = withContext(Dispatchers.IO) {
+                db.clienteDao().insertarCliente(
+                    arrayListOf(mCliente)
+                )
             }
-
-            Constantes.OPERATION_EDITAR -> {
-
+            if (result.isNotEmpty()) {
+                guardarDireccionesCliente(result[0])
             }
         }
     }
 
-    fun deleteCliente(clienteId: Long) {
+    fun actualizarCliente() {
+        var mCliente = Cliente(
+            idCliente.value!!,
+            nombre.value!!,
+            apellido.value!!,
+            email.value!!
+        )
+        viewModelScope.launch {
+            var result = withContext(Dispatchers.IO) {
+                db.clienteDao().actualizarCliente(
+                    mCliente
+                )
+            }
+            if (result > 0 ) {
+                guardarDireccionesCliente(idCliente.value!!)
+            }
+        }
+    }
+    fun borrarDireccionPorID(dir:Direccion){
+        viewModelScope.launch {
+            var borrarDireccionPorID = withContext(Dispatchers.IO){
+                db.direccionesDao().borrarDireccion(dir)
+            }
+            borroDireccion.value = borrarDireccionPorID.toString().isNotEmpty()
+        }
+    }
+    fun borrarCliente(clienteId: Long) {
         viewModelScope.launch {
             var result = withContext(Dispatchers.IO) {
                 db.clienteDao().borrarClientePorId(clienteId)
             }
             if (result.toString().isNotEmpty()) {
                 var resultBorrarDirecciones = withContext(Dispatchers.IO) {
-                    db.direccionesDao().borrarDireccion(clienteId)
+                    db.direccionesDao().borrarDireccionPorIdCliente(clienteId)
                 }
                 if (resultBorrarDirecciones.toString().isNotEmpty()) {
                     fueExitosaLaOperacion.value = resultBorrarDirecciones.toString().isNotEmpty()
@@ -77,20 +96,27 @@ class FormularioViewModel : ViewModel() {
     }
 
     fun guardarDireccionesCliente(id: Long) {
-        var listaDirecion: ArrayList<Direccion> = ArrayList()
+//        var listaDirecion: ArrayList<Direccion> = ArrayList()
         viewModelScope.launch {
-            if (direccion.value!!.isNotEmpty()) {
-                direcciones.add(direccion.value!!)
+            if (!direccion.value.isNullOrEmpty()) {
+                direccionesString.add(direccion.value!!)
             }
-            for (myDireccion in direcciones) {
-                listaDirecion.add(Direccion(0, id, myDireccion))
+            for (myDireccion in direccionesString) {
+                if (direcciones.firstOrNull { it.direccion == myDireccion } == null){
+                    direcciones.add(Direccion(0, id, myDireccion))
+                }
             }
-            var result = withContext(Dispatchers.IO) {
-                db.direccionesDao().insertarDireccion(
-                    listaDirecion
-                )
+            if(direcciones.filter { it.idDireccion.toInt() == 0 }.isNotEmpty()) {
+                val result = withContext(Dispatchers.IO) {
+                    db.direccionesDao().insertarDireccion(
+                        direcciones.filter { it.idDireccion.toInt() == 0 }
+                    )
+                }
+                fueExitosaLaOperacion.value = result.isNotEmpty()
+            }else{
+                fueExitosaLaOperacion.value = true
+
             }
-            fueExitosaLaOperacion.value = result.isNotEmpty()
         }
     }
 
@@ -106,7 +132,9 @@ class FormularioViewModel : ViewModel() {
             nombre.value = clienteDb.nombre
             apellido.value = clienteDb.apellido
             email.value = clienteDb.email
-            direcciones.addAll(direccionesDb.map { it.direccion })
+            direcciones.addAll(direccionesDb)
+            direccionesString.addAll(direccionesDb.map { it.direccion })
+
         }
 
     }

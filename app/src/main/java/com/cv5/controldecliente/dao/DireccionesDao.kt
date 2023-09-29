@@ -19,7 +19,11 @@ interface DireccionesDao {
 
     @Update
     suspend fun actualizarDireccion(direccion: Direccion)
+    @Delete
+    suspend fun borrarDireccion(direccion: Direccion):Int
 
     @Query("DELETE FROM Direccion WHERE idCliente = :clienteId")
-    suspend fun borrarDireccion(clienteId:Long):Int
+    suspend fun borrarDireccionPorIdCliente(clienteId:Long):Int
+    @Query("DELETE FROM Direccion WHERE idDireccion = :idDireccion")
+    suspend fun borrarDireccionPorID(idDireccion:Long):Int
 }

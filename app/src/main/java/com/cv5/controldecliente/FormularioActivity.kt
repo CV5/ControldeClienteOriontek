@@ -26,29 +26,48 @@ class FormularioActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.modelo = viewModel
         binding.lifecycleOwner = this
-
         viewModel.operacion = intent.getStringExtra(Constantes.OPERATION_KEY)!!
         arrayAdapter = ArrayAdapter(this,
             android.R.layout.simple_list_item_1,
-            viewModel.direcciones
+            viewModel.direccionesString
         )
         binding.lvListaDirecciones.adapter = arrayAdapter
+        binding.lvListaDirecciones.setOnItemClickListener { parent, view, position, id ->
+            val element = arrayAdapter.getItem(position)
+
+            when(viewModel.operacion){
+                Constantes.OPERATION_INSERTAR->{
+                    arrayAdapter.remove(element)
+                    mostrarMensaje("Dirección eliminada")
+                }
+                Constantes.OPERATION_EDITAR->{
+                    val inDatabase = viewModel.direcciones.firstOrNull { it.direccion == element }
+                    if (inDatabase != null){
+                        viewModel.borrarDireccionPorID(viewModel.direcciones.first { it.direccion == element })
+                        arrayAdapter.remove(element)
+                        mostrarMensaje("Dirección eliminada")
+                    }else{
+                        arrayAdapter.remove(element)
+                        mostrarMensaje("Dirección eliminada")
+                    }
+
+                }
+            }
+        }
 
         binding.btAgregarDirecciones.setOnClickListener {
-                if (viewModel.direccion.value!!.isNotEmpty()){
-                    viewModel.direcciones.add(viewModel.direccion.value!!)
+                if (!viewModel.direccion.value.isNullOrEmpty()){
+                    viewModel.direccionesString.add(viewModel.direccion.value!!)
                     binding.etDireccion.text.clear()
                     arrayAdapter.notifyDataSetChanged()
+
+
                 }else{
                     Toast.makeText(this,
                         "El campo de dirección esta vacío",
                         Toast.LENGTH_LONG).show()
                 }
-
         }
-
-
-
         if (viewModel.operacion == Constantes.OPERATION_EDITAR){
             viewModel.idCliente.value = intent.getLongExtra(Constantes.ID_CLIENTE_KEY,0)
             binding.btnBorrarCliente.visibility = View.VISIBLE
@@ -60,7 +79,6 @@ class FormularioActivity : AppCompatActivity() {
             binding.btnEditarCliente.visibility = View.GONE
             binding.btGuardarCliente.visibility = View.VISIBLE
         }
-
         viewModel.fueExitosaLaOperacion.observe(this, Observer {
             if (it){
                 mostrarMensaje("Operación Exitosa");
@@ -69,14 +87,15 @@ class FormularioActivity : AppCompatActivity() {
                 mostrarMensaje("Operación Fallida");
             }
         })
-
         viewModel.tieneDirecciones.observe(this, Observer {
             if (it){
                 arrayAdapter.notifyDataSetChanged()
             }
         })
-
-
+        viewModel.borroDireccion.observe(this, Observer {
+            mostrarMensaje("Se borró con exito la dirección")
+            arrayAdapter.notifyDataSetChanged()
+        })
     }
 
     private fun irAlInicio() {
@@ -84,7 +103,6 @@ class FormularioActivity : AppCompatActivity() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
     }
-
     private fun mostrarMensaje(s: String) {
         Toast.makeText(applicationContext,s,Toast.LENGTH_LONG).show()
     }

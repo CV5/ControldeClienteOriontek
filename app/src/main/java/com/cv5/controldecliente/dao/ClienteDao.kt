@@ -21,7 +21,7 @@ interface ClienteDao {
     suspend fun insertarCliente(cliente: List<Cliente>):List<Long>
     //funciòn para actualizar, recibe una instancia del objeto cliente
     // y devuelve un objeto especificando cuantas filas fueron actualizadas
-    @Update suspend fun actualizarCliente(cliente:Cliente)
+    @Update suspend fun actualizarCliente(cliente:Cliente): Int
     //funciòn para borrar, recibe una instancia del objeto cliente
     // y devuelve un objeto especificando cuantas registro que fueron borradas
     @Delete suspend fun borrarCliente(cliente:Cliente): Int
