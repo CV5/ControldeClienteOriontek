@@ -1,4 +1,4 @@
-package com.cv5.controldecliente
+package com.cv5.controldecliente.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -99,7 +99,7 @@ class FormularioActivity : AppCompatActivity() {
         }
     }
     private fun irAlInicio() {
-        val intent = Intent(applicationContext,MainActivity::class.java)
+        val intent = Intent(applicationContext, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
     }

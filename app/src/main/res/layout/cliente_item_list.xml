@@ -49,12 +49,12 @@
                  />
 
 
-                <Button
-                    android:id="@+id/btVerDirecciones"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ver Direcciones" />
+<!--                <Button-->
+<!--                    android:id="@+id/btVerDirecciones"-->
+<!--                    style="@style/Widget.MaterialComponents.Button.TextButton"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Ver Direcciones" />-->
             </LinearLayout>
 
         </LinearLayout>

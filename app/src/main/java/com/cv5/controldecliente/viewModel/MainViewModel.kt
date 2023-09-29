@@ -20,23 +20,16 @@ class MainViewModel:ViewModel() {
     fun iniciar(){
         viewModelScope.launch {
             clienteLista.value = withContext(Dispatchers.IO){
-//            db.clienteDao().insertarCliente(arrayListOf<Cliente>(
-//                Cliente(0,
-//                    "Cristian",
-//                    "Veras",
-//                    "cv5@gmail.com"
-//                    ),
-//                Cliente(0,
-//                "Onay",
-//                "Veras",
-//                "onay@gmail.com"
-//            )
-
-//            ))
                 db.clienteDao().obtenerTodos()
             }
+        }
+    }
 
-
+    fun buscarPorNombre() {
+        viewModelScope.launch {
+            clienteLista.value = withContext(Dispatchers.IO){
+                db.clienteDao().buscarPorNombre(parameterBusqueda.value!!)
+            }
         }
     }
 

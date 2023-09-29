@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.cv5.controldecliente.FormularioActivity
+import com.cv5.controldecliente.ui.FormularioActivity
 import com.cv5.controldecliente.R
 import com.cv5.controldecliente.config.Constantes
 import com.cv5.controldecliente.databinding.ClienteItemListBinding
@@ -43,7 +43,7 @@ class ClientesAdapter(private val dataset: List<Cliente>) :
 
 
             binding.root.setOnClickListener {
-                val intent = Intent(contexto,FormularioActivity::class.java)
+                val intent = Intent(contexto, FormularioActivity::class.java)
                 intent.putExtra(Constantes.OPERATION_KEY,Constantes.OPERATION_EDITAR)
                 intent.putExtra(Constantes.ID_CLIENTE_KEY, itemActual.idCliente)
                 contexto.startActivity(intent)

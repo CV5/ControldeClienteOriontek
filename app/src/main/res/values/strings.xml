@@ -11,4 +11,8 @@
     <string name="borrar">borrar</string>
     <string name="actualizar">actualizar</string>
     <string name="no_hay_clientes_registrado_msj">No hay clientes registrado en este momento</string>
+    <string name="quieres_borrar_el_cliente">quieres Borrar el cliente? tambien borraras sus Direcciones.</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="si">si</string>
 </resources>

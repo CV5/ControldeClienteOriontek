@@ -9,21 +9,20 @@ import com.cv5.controldecliente.models.Cliente
 @Dao
 interface ClienteDao {
 
-    //Query para obtener todos los clientes de la base de datos
     @Query("select * from Cliente")
     suspend fun obtenerTodos():List<Cliente>
 
     @Query("select * from Cliente where idCliente =:id")
     suspend fun obtenerClientePorID(id:Long):Cliente
-    //el Insert para insertar los datos a la tabla, toma una lista por parametros
-    //y retorna un long que son las llaves de cada una de las introcciones.
+
+    @Query("select * from Cliente where nombre LIKE '%' || :name || '%' OR apellido LIKE '%' || :name || '%'")
+    suspend fun buscarPorNombre(name:String):List<Cliente>
+
     @Insert
     suspend fun insertarCliente(cliente: List<Cliente>):List<Long>
-    //funciòn para actualizar, recibe una instancia del objeto cliente
-    // y devuelve un objeto especificando cuantas filas fueron actualizadas
+
     @Update suspend fun actualizarCliente(cliente:Cliente): Int
-    //funciòn para borrar, recibe una instancia del objeto cliente
-    // y devuelve un objeto especificando cuantas registro que fueron borradas
+
     @Delete suspend fun borrarCliente(cliente:Cliente): Int
 
 

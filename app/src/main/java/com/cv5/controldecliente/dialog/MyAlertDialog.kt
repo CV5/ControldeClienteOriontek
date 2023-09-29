@@ -5,7 +5,7 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
+import com.cv5.controldecliente.R
 import com.cv5.controldecliente.viewModel.FormularioViewModel
 
 class MyAlertDialog() : DialogFragment() {
@@ -14,12 +14,12 @@ class MyAlertDialog() : DialogFragment() {
 
         val viewModel:FormularioViewModel = ViewModelProvider(requireActivity())[FormularioViewModel::class.java]
 
-        builder.setTitle("Confirmar")
-            .setMessage("quieres Borrar el cliente? tambien borraras sus Direcciones.")
-            .setPositiveButton("si") { dialog, which ->
+        builder.setTitle(getString(R.string.confirmar))
+            .setMessage(getString(R.string.quieres_borrar_el_cliente))
+            .setPositiveButton(getString(R.string.si)) { dialog, which ->
                 viewModel.borrarCliente(viewModel.idCliente.value!!)
             }
-            .setNegativeButton("Cancelar") { dialog, which ->
+            .setNegativeButton(getString(R.string.cancelar)) { dialog, which ->
                 dialog.dismiss()
             }
 
